@@ -28,34 +28,40 @@ def parseCSV(idx, part):
     if idx==0:
         part.next()
     for p in csv.reader(part):
-        yield Row(ORIGIN=p[14],
-                  ORIGIN_AIRPORT_ID = str(p[11]),
-                  DEST = p[23],
-                  DEST_AIRPORT_ID = str(p[20]),
-                  ROUTE = (p[11],p[20]))
+        yield Row(Airport_IATA= p[0], Airport_Name = p[1], Airport_City = p[2], Country_name = p[3], Latitude = p[4], Longitude = p[5])
+
+
+def parseCSV1(idx, part):
+        if idx == 0:
+            part.next()
+        for p in csv.reader(part):
+            yield Row(Airport= p[1], origin_count= p[2], dest_count= p[3], Total_Flights= p[4])
+
 def main(sc):
     spark = HiveContext(sc)
     sqlContext = HiveContext(sc)
+    rows = sc.textFile('../lmf445/Flight_Project/Data/Airport Codes8.csv').mapPartitionsWithIndex(parseCSV)
+    airports = sqlContext.createDataFrame(rows)
     #airports = sqlContext.read.load('Flight_Project/Data/Airport Codes8.csv', format='csv', header=True, inferSchema=True)
-    #airports = airports.select('*').withColumnRenamed('Airport (IATA)', 'Airport')
-    #airports = airports.select('*').withColumnRenamed('Airport (Name)', 'Name')
-    #airports = airports.select('*').withColumnRenamed('Airport (City)', 'City')
-    #airports = airports.drop('Country (Name)')
-    busyairports = sqlContext.read.load('Flight_Project/Data/MostBussyAirport.csv', format='csv', header=True, inferSchema=True)
-    busyairports = busyairports.select('*',
-                                       coalesce(busyairports["origin_count"], lit(0.0)).alias('clean_origin_count'))
+    airports = airports.select('*').withColumnRenamed('Airport_IATA', 'Airport')
+    airports = airports.select('*').withColumnRenamed('Airport_Name', 'Name')
+    airports = airports.select('*').withColumnRenamed('Airport_City', 'City')
+    airports = airports.drop('Country_name')
+    rows2 = sc.textFile('../lmf445/MostBussyAirport_new.csv').mapPartitionsWithIndex(parseCSV1)
+    busyairports = sqlContext.createDataFrame(rows2)
+    #busyairports = sqlContext.read.load('Flight_Project/Data/MostBussyAirport.csv', format='csv', header=True, inferSchema=True)
+    busyairports = busyairports.select('*', coalesce(busyairports["origin_count"], lit(0.0)).alias('clean_origin_count'))
     busyairports = busyairports.drop('origin_count')
     busyairports = busyairports.select('*', coalesce(busyairports["dest_count"], lit(0.0)).alias('clean_dest_count'))
     busyairports = busyairports.drop('dest_count')
-    busyairports = busyairports.select('*',
-                                       coalesce(busyairports["Total_Flights"], lit(0.0)).alias('clean_Total_Flights'))
+    busyairports = busyairports.select('*', coalesce(busyairports["Total_Flights"], lit(0.0)).alias('clean_Total_Flights'))
     busyairports = busyairports.drop('Total_Flights')
     busyairports = busyairports.select('*', (busyairports.clean_origin_count + busyairports.clean_dest_count).alias(
         'Total_Flights'))
     busyairports = busyairports.filter(busyairports.Airport != 'DEST')
     busyairports = busyairports.filter(busyairports.Airport != 'ORIGIN')
     busyairports = busyairports.drop('clean_Total_Flights')
-    busyairports = busyairports.drop('_c0')
+    #busyairports = busyairports.drop('_c0')
     busyairports = busyairports.select('*').withColumnRenamed('clean_dest_count', 'dest_count')
     busyairports = busyairports.select('*').withColumnRenamed('clean_origin_count', 'origin_count')
     locAirports = airports.join(busyairports, on="Airport", how='inner')
