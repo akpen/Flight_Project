@@ -17,9 +17,12 @@
 
 
 #### Introduction
+Thousands of domestically flying airplanes take off and land everyday in America (around 31,460 to be precise). Rich data on each and everyone of these flights is publicly available and they make up for a very interesting
+dataset. Even though millions of people fly domestically every year, and might therefore have a vested interest in knowing more about this market, no publicly available analysis is to be found online. Knowing the amount of delay that is to be expected for a certain flight route might for example help someone make an informed decision on the layover time to allow for when booking a flight. Our goal is to draw an informative picture of domestic flights in America for a chosen number of years. To do so we will apply big data methods, running spark scripts in a cluster environment, to extract chosen information for output and visualization. Furthermore we will be looking for trends over the time period of the data and looking into airport and state connectivity through network analysis. 
 
 #### Data & Methodologies
 
+<img src="/Images/flow.png" width="808">
 
 #### A. Data
 The data used was threefold; aviation data, geospatial information for airports and geo-spatial information on states, more details below:
