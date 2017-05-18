@@ -47,3 +47,39 @@ With this reduced network, we measured the average shortest path length from one
 
 <img src="/Images/connectivity_score2.png" width="808">
 
+#### D. Time Series
+
+The busiest (no. landings and takeoffs) airport for domestic flights in America, by some margin, is Hartsfield-Jackson Atlanta International Airport in Atlanta Georgia.
+
+<img src="/Images/8_busiest_airports_monthly.png" width="808">
+>
+<img src="/Images/8_busiest_airports_monthly_normalized.png" width="808">
+>
+Somewhat obviously the busiest city is Atlanta, Georgia, though Chicago, Illinois, recorded more flights for the period June 2014 through December 2015.
+Interestingly a drop in flights through Chicago can be seen in January 2016. The reason for this is not clear though a quick internet search seems to suggest that at
+least a part of the reason might be due to employment of larger aircraft vessels. New York is the 7th busiest city in America but if Newark airport is included it rises to
+3rd.
+
+<img src="/Images/8_busiest_cities_monthly.png" width="808">
+>
+<img src="/Images/8_busiest_cities_monthly_normalized.png" width="808">
+
+The busiest route by some margin is Los Angeles - San Francisco, followed by Los Angeles - New York and Los Angeles - Las Vegas, figure 4. These are calculated
+irrespective of flight direction but there is a close to 1:1 matching between all legs. 
+
+
+<img src="/Images/8_busiest_routes_monthly_averaged.png" width="808">
+
+
+The airport that has seen the most increase in flights is SeattleTacoma International Airport and the airport that has seen the most decrease is Dallas/Fort Worth International Airport, figures 5 and 6. The same results are found when looking at the data on city level.
+
+<img src="/Images/increase_airports.png" width="808">
+
+<img src="/Images/decrease_airports.png" width="808">
+
+The route that saw the most increase in traffic was Dallas - LaGuardia and the route that saw the most decline in traffic was Los Angeles - San Diego.
+
+<img src="/Images/8_busiest_routes_monthly.png" width="808">
+
+<img src="/Images/decrease_routes.png" width="808">
+
